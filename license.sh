@@ -1,43 +1,50 @@
 #!/bin/bash
 
-# USAGE: ./script.sh [output directory path] [SourcePackages directory path]
+# USAGE: ./license.sh [Root.plist path] [SourcePackages directory path]
 
-outputPath="$1"
+rootPlist="$1"
 sourcePackagesPath="$2"
 workspaceStatePath="$sourcePackagesPath/workspace-state.json"
 checkoutsPath="$sourcePackagesPath/checkouts"
+plistBuddy="/usr/libexec/PlistBuddy"
 
-# Exit with usage information
+# Check for correct usage
 if [ "$#" -ne 2 ]; then
-    echo "USAGE: $0 [output directory path] [SourcePackages directory path]"
+    echo "Error: Incorrect number of arguments."
+    echo "USAGE: $0 [Root.plist path] [SourcePackages directory path]"
+    echo "Example: $0 ./Settings.bundle/Root.plist ~/Library/Developer/Xcode/DerivedData/Project-abc123/SourcePackages"
     exit 1
 fi
 
-# Check if jq is installed
+# Ensure jq is installed
 if ! command -v jq &> /dev/null; then
     echo "jq could not be found, please install it to parse JSON."
     exit 1
 fi
 
-# Load workspace-state.json
-if [ ! -f "$workspaceStatePath" ]; then
-    echo "Error: Could not read workspace-state.json."
-    exit 1
-fi
+# Create a new Root.plist file with the base structure
+/bin/cat <<EOF >"$rootPlist"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PreferenceSpecifiers</key>
+  <array>
+    <dict>
+      <key>Type</key>
+      <string>PSGroupSpecifier</string>
+      <key>Title</key>
+      <string>Licenses</string>
+    </dict>
+    <!-- License Entries Will Be Added Here -->
+  </array>
+</dict>
+</plist>
+EOF
 
-# Initialize license-list.plist
-plistPath="$outputPath/license-list.plist"
-echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > "$plistPath"
-echo "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" >> "$plistPath"
-echo "<plist version=\"1.0\">" >> "$plistPath"
-echo "<dict>" >> "$plistPath"
-echo "<key>libraries</key>" >> "$plistPath"
-echo "<array>" >> "$plistPath"
-
-# Parse each dependency from workspace-state.json
-dependencies=$(jq -r '.object.dependencies[] | .packageRef.name + " " + .packageRef.location' "$workspaceStatePath")
-
-for dependency in $dependencies; do
+# Add license entries to the Root.plist
+index=1 # Start from 1 because 0 is the header
+for dependency in $(jq -r '.object.dependencies[] | .packageRef.name + " " + .packageRef.location' "$workspaceStatePath"); do
     name=$(echo "$dependency" | cut -d' ' -f1)
     location=$(echo "$dependency" | cut -d' ' -f2)
     repositoryName=$(basename "$location" .git)
@@ -47,22 +54,17 @@ for dependency in $dependencies; do
 
     if [ -n "$licenseFile" ]; then
         # Read license file content
-        licenseBody=$(cat "$licenseFile")
+        licenseContent=$(<"$licenseFile")
 
-        # Append to plist
-        echo "<dict>" >> "$plistPath"
-        echo "<key>name</key><string>$name</string>" >> "$plistPath"
-        echo "<key>url</key><string>$location</string>" >> "$plistPath"
-        echo "<key>licenseBody</key><string><![CDATA[$licenseBody]]></string>" >> "$plistPath"
-        echo "</dict>" >> "$plistPath"
+        # Add a new entry to the 'PreferenceSpecifiers' array
+        $plistBuddy -c "Add :PreferenceSpecifiers:$index dict" "$rootPlist"
+        $plistBuddy -c "Add :PreferenceSpecifiers:$index:Title string '$name'" "$rootPlist"
+        $plistBuddy -c "Add :PreferenceSpecifiers:$index:Type string 'PSGroupSpecifier'" "$rootPlist"
+        $plistBuddy -c "Add :PreferenceSpecifiers:$index:FooterText string '$licenseContent'" "$rootPlist"
+        ((index++))
     else
         echo "Warning: No license found for $name."
     fi
 done
 
-# Close plist tags
-echo "</array>" >> "$plistPath"
-echo "</dict>" >> "$plistPath"
-echo "</plist>" >> "$plistPath"
-
-echo "Generated license-list.plist at $plistPath."
+echo "Updated Root.plist with licenses."

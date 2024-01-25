@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "twitter-text",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nysander/twitter-text",
+      "state" : {
+        "revision" : "b96594027464bf5ea0fe66d24666c878b94d6a15",
+        "version" : "0.0.3"
+      }
+    },
+    {
+      "identity" : "unicodeurl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nysander/UnicodeURL.git",
+      "state" : {
+        "revision" : "fe15c8b585c2e6d22dfe81da899183e6aa376a93",
+        "version" : "0.1.0"
+      }
+    }
+  ],
+  "version" : 2
+}

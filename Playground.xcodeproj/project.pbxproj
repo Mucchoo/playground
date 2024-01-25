@@ -7,21 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA28E4D12AF8A3E20030F02A /* SwiftUIPlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA28E4D02AF8A3E20030F02A /* SwiftUIPlaygroundApp.swift */; };
+		AA28E4D12AF8A3E20030F02A /* PlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA28E4D02AF8A3E20030F02A /* PlaygroundApp.swift */; };
 		AA28E4D32AF8A3E20030F02A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA28E4D22AF8A3E20030F02A /* ContentView.swift */; };
 		AA28E4D52AF8A3E30030F02A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA28E4D42AF8A3E30030F02A /* Assets.xcassets */; };
-		AA28E4D92AF8A3E30030F02A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA28E4D82AF8A3E30030F02A /* Preview Assets.xcassets */; };
 		AA550EA12B3A5B0000528AB3 /* SuggestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA550EA02B3A5B0000528AB3 /* SuggestView.swift */; };
 		AA84C9312B6239C2005DD8A6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AA84C9302B6239C2005DD8A6 /* Settings.bundle */; };
+		AAAD392B2B6244C7004A0774 /* TwitterText in Frameworks */ = {isa = PBXBuildFile; productRef = AAAD392A2B6244C7004A0774 /* TwitterText */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AA28E4CD2AF8A3E20030F02A /* SwiftUIPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA28E4D02AF8A3E20030F02A /* SwiftUIPlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPlaygroundApp.swift; sourceTree = "<group>"; };
+		AA28E4CD2AF8A3E20030F02A /* Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA28E4D02AF8A3E20030F02A /* PlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundApp.swift; sourceTree = "<group>"; };
 		AA28E4D22AF8A3E20030F02A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA28E4D42AF8A3E30030F02A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AA28E4D62AF8A3E30030F02A /* SwiftUIPlayground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftUIPlayground.entitlements; sourceTree = "<group>"; };
-		AA28E4D82AF8A3E30030F02A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AA28E4D62AF8A3E30030F02A /* Playground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Playground.entitlements; sourceTree = "<group>"; };
 		AA550EA02B3A5B0000528AB3 /* SuggestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestView.swift; sourceTree = "<group>"; };
 		AA84C9302B6239C2005DD8A6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -31,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAAD392B2B6244C7004A0774 /* TwitterText in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,7 +40,7 @@
 		AA28E4C42AF8A3E20030F02A = {
 			isa = PBXGroup;
 			children = (
-				AA28E4CF2AF8A3E20030F02A /* SwiftUIPlayground */,
+				AA28E4CF2AF8A3E20030F02A /* Playground */,
 				AA28E4CE2AF8A3E20030F02A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,39 +48,30 @@
 		AA28E4CE2AF8A3E20030F02A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AA28E4CD2AF8A3E20030F02A /* SwiftUIPlayground.app */,
+				AA28E4CD2AF8A3E20030F02A /* Playground.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AA28E4CF2AF8A3E20030F02A /* SwiftUIPlayground */ = {
+		AA28E4CF2AF8A3E20030F02A /* Playground */ = {
 			isa = PBXGroup;
 			children = (
-				AA28E4D02AF8A3E20030F02A /* SwiftUIPlaygroundApp.swift */,
+				AA28E4D02AF8A3E20030F02A /* PlaygroundApp.swift */,
 				AA28E4D22AF8A3E20030F02A /* ContentView.swift */,
 				AA84C9302B6239C2005DD8A6 /* Settings.bundle */,
 				AA550EA02B3A5B0000528AB3 /* SuggestView.swift */,
 				AA28E4D42AF8A3E30030F02A /* Assets.xcassets */,
-				AA28E4D62AF8A3E30030F02A /* SwiftUIPlayground.entitlements */,
-				AA28E4D72AF8A3E30030F02A /* Preview Content */,
+				AA28E4D62AF8A3E30030F02A /* Playground.entitlements */,
 			);
-			path = SwiftUIPlayground;
-			sourceTree = "<group>";
-		};
-		AA28E4D72AF8A3E30030F02A /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				AA28E4D82AF8A3E30030F02A /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
+			path = Playground;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AA28E4CC2AF8A3E20030F02A /* SwiftUIPlayground */ = {
+		AA28E4CC2AF8A3E20030F02A /* Playground */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA28E4DC2AF8A3E30030F02A /* Build configuration list for PBXNativeTarget "SwiftUIPlayground" */;
+			buildConfigurationList = AA28E4DC2AF8A3E30030F02A /* Build configuration list for PBXNativeTarget "Playground" */;
 			buildPhases = (
 				AA28E4C92AF8A3E20030F02A /* Sources */,
 				AA28E4CA2AF8A3E20030F02A /* Frameworks */,
@@ -90,11 +81,12 @@
 			);
 			dependencies = (
 			);
-			name = SwiftUIPlayground;
+			name = Playground;
 			packageProductDependencies = (
+				AAAD392A2B6244C7004A0774 /* TwitterText */,
 			);
-			productName = SwiftUIPlayground;
-			productReference = AA28E4CD2AF8A3E20030F02A /* SwiftUIPlayground.app */;
+			productName = Playground;
+			productReference = AA28E4CD2AF8A3E20030F02A /* Playground.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -112,7 +104,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AA28E4C82AF8A3E20030F02A /* Build configuration list for PBXProject "SwiftUIPlayground" */;
+			buildConfigurationList = AA28E4C82AF8A3E20030F02A /* Build configuration list for PBXProject "Playground" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -122,12 +114,13 @@
 			);
 			mainGroup = AA28E4C42AF8A3E20030F02A;
 			packageReferences = (
+				AAAD39292B6244C7004A0774 /* XCRemoteSwiftPackageReference "twitter-text" */,
 			);
 			productRefGroup = AA28E4CE2AF8A3E20030F02A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AA28E4CC2AF8A3E20030F02A /* SwiftUIPlayground */,
+				AA28E4CC2AF8A3E20030F02A /* Playground */,
 			);
 		};
 /* End PBXProject section */
@@ -137,7 +130,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA28E4D92AF8A3E30030F02A /* Preview Assets.xcassets in Resources */,
 				AA84C9312B6239C2005DD8A6 /* Settings.bundle in Resources */,
 				AA28E4D52AF8A3E30030F02A /* Assets.xcassets in Resources */,
 			);
@@ -151,7 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA28E4D32AF8A3E20030F02A /* ContentView.swift in Sources */,
-				AA28E4D12AF8A3E20030F02A /* SwiftUIPlaygroundApp.swift in Sources */,
+				AA28E4D12AF8A3E20030F02A /* PlaygroundApp.swift in Sources */,
 				AA550EA12B3A5B0000528AB3 /* SuggestView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -278,10 +270,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SwiftUIPlayground/SwiftUIPlayground.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Playground/Playground.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftUIPlayground/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 4WXTDSDQPZ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -301,7 +293,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yazujumusa.SwiftUIPlayground;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yazujumusa.Playground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -316,10 +308,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SwiftUIPlayground/SwiftUIPlayground.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Playground/Playground.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SwiftUIPlayground/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 4WXTDSDQPZ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -339,7 +331,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yazujumusa.SwiftUIPlayground;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yazujumusa.Playground;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -352,7 +344,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AA28E4C82AF8A3E20030F02A /* Build configuration list for PBXProject "SwiftUIPlayground" */ = {
+		AA28E4C82AF8A3E20030F02A /* Build configuration list for PBXProject "Playground" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA28E4DA2AF8A3E30030F02A /* Debug */,
@@ -361,7 +353,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA28E4DC2AF8A3E30030F02A /* Build configuration list for PBXNativeTarget "SwiftUIPlayground" */ = {
+		AA28E4DC2AF8A3E30030F02A /* Build configuration list for PBXNativeTarget "Playground" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA28E4DD2AF8A3E30030F02A /* Debug */,
@@ -371,6 +363,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AAAD39292B6244C7004A0774 /* XCRemoteSwiftPackageReference "twitter-text" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nysander/twitter-text";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AAAD392A2B6244C7004A0774 /* TwitterText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAAD39292B6244C7004A0774 /* XCRemoteSwiftPackageReference "twitter-text" */;
+			productName = TwitterText;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AA28E4C52AF8A3E20030F02A /* Project object */;
 }
