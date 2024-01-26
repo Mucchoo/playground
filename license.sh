@@ -7,26 +7,24 @@ checkoutsPath="$sourcePackagesPath/checkouts"
 licensesDir="$(dirname "$licensesPlist")/Licenses"
 plistBuddy="/usr/libexec/PlistBuddy"
 
-# Ensure jq is installed
-if ! command -v jq &> /dev/null; then
-    echo "jq could not be found, please install it to parse JSON."
-    exit 1
-fi
+check_jq_installed() {
+    if ! command -v jq &> /dev/null; then
+        echo "jq could not be found, please install it to parse JSON."
+        exit 1
+    fi
+}
 
-# Remove existing Licenses.plist and Licenses directory
-if [ -f "$licensesPlist" ]; then
-    rm "$licensesPlist"
-fi
+remove_existing_files() {
+    rm -f "$licensesPlist"
+    rm -rf "$licensesDir"
+}
 
-if [ -d "$licensesDir" ]; then
-    rm -r "$licensesDir"
-fi
+create_licenses_directory() {
+    mkdir -p "$licensesDir"
+}
 
-# Create the Licenses directory
-mkdir -p "$licensesDir"
-
-# Create the main Licenses.plist file
-/bin/cat <<EOF >"$licensesPlist"
+create_main_licenses_plist() {
+    cat <<EOF >"$licensesPlist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -39,25 +37,18 @@ mkdir -p "$licensesDir"
       <key>Type</key>
       <string>PSGroupSpecifier</string>
     </dict>
-    <!-- License Entries Will Be Added Here -->
   </array>
 </dict>
 </plist>
 EOF
+}
 
-# Add license entries to the Root.plist and create individual license files
-index=1
-for dependency in $(jq -r '.object.dependencies[] | .packageRef.name' "$workspaceStatePath" | sort | uniq); do
-    name="$dependency"
-    repositoryLocation=$(jq -r --arg name "$name" '.object.dependencies[] | select(.packageRef.name == $name) | .packageRef.location' "$workspaceStatePath")
-    repositoryName=$(basename "$repositoryLocation" .git)
+add_license_entry() {
+    local name="$1"
+    local licenseFile="$2"
+    local index="$3"
 
-    # Find the license file
-    licenseFile=$(find "$checkoutsPath/$repositoryName" -iname 'LICENSE' -o -iname 'LICENCE' | head -n 1)
-
-    if [ -n "$licenseFile" ]; then
-        # Create individual license plist file
-        /bin/cat <<EOF >"$licensesDir/$name.plist"
+    cat <<EOF >"$licensesDir/$name.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -77,16 +68,40 @@ for dependency in $(jq -r '.object.dependencies[] | .packageRef.name' "$workspac
 </plist>
 EOF
 
-        # Add a new entry to the 'PreferenceSpecifiers' array in the main plist
-        $plistBuddy -c "Add :PreferenceSpecifiers:$index dict" "$licensesPlist"
-        $plistBuddy -c "Add :PreferenceSpecifiers:$index:File string 'Licenses/$name'" "$licensesPlist"
-        $plistBuddy -c "Add :PreferenceSpecifiers:$index:Title string '$name'" "$licensesPlist"
-        $plistBuddy -c "Add :PreferenceSpecifiers:$index:Type string 'PSChildPaneSpecifier'" "$licensesPlist"
+    $plistBuddy -c "Add :PreferenceSpecifiers:$index dict" "$licensesPlist"
+    $plistBuddy -c "Add :PreferenceSpecifiers:$index:File string 'Licenses/$name'" "$licensesPlist"
+    $plistBuddy -c "Add :PreferenceSpecifiers:$index:Title string '$name'" "$licensesPlist"
+    $plistBuddy -c "Add :PreferenceSpecifiers:$index:Type string 'PSChildPaneSpecifier'" "$licensesPlist"
+}
 
-        ((index++))
-    else
-        echo "Warning: No license found for $name."
-    fi
-done
+process_dependencies() {
+    local index=1
+    jq -r '.object.dependencies[] | .packageRef.name' "$workspaceStatePath" | sort | uniq | \
+    while IFS= read -r name; do
+        local repositoryLocation
+        repositoryLocation=$(jq -r --arg name "$name" '.object.dependencies[] | select(.packageRef.name == $name) | .packageRef.location' "$workspaceStatePath")
+        local repositoryName
+        repositoryName=$(basename "$repositoryLocation" .git)
 
-echo "Updated Root.plist with licenses."
+        local licenseFile
+        licenseFile=$(find "$checkoutsPath/$repositoryName" -iname 'LICENSE' -o -iname 'LICENCE' | head -n 1)
+
+        if [ -n "$licenseFile" ]; then
+            add_license_entry "$name" "$licenseFile" "$index"
+            ((index++))
+        else
+            echo "Warning: No license found for $name."
+        fi
+    done
+}
+
+main() {
+    check_jq_installed
+    remove_existing_files
+    create_licenses_directory
+    create_main_licenses_plist
+    process_dependencies
+    echo "Updated licenses."
+}
+
+main

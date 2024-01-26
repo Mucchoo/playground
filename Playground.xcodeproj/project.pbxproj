@@ -13,6 +13,7 @@
 		AA550EA12B3A5B0000528AB3 /* SuggestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA550EA02B3A5B0000528AB3 /* SuggestView.swift */; };
 		AA84C9312B6239C2005DD8A6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AA84C9302B6239C2005DD8A6 /* Settings.bundle */; };
 		AAAD392B2B6244C7004A0774 /* TwitterText in Frameworks */ = {isa = PBXBuildFile; productRef = AAAD392A2B6244C7004A0774 /* TwitterText */; };
+		AABA5F8F2B6384DF0027EB96 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = AABA5F8E2B6384DF0027EB96 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AABA5F8F2B6384DF0027EB96 /* Kingfisher in Frameworks */,
 				AAAD392B2B6244C7004A0774 /* TwitterText in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +86,7 @@
 			name = Playground;
 			packageProductDependencies = (
 				AAAD392A2B6244C7004A0774 /* TwitterText */,
+				AABA5F8E2B6384DF0027EB96 /* Kingfisher */,
 			);
 			productName = Playground;
 			productReference = AA28E4CD2AF8A3E20030F02A /* Playground.app */;
@@ -115,6 +118,7 @@
 			mainGroup = AA28E4C42AF8A3E20030F02A;
 			packageReferences = (
 				AAAD39292B6244C7004A0774 /* XCRemoteSwiftPackageReference "twitter-text" */,
+				AABA5F8D2B6384DF0027EB96 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = AA28E4CE2AF8A3E20030F02A /* Products */;
 			projectDirPath = "";
@@ -373,6 +377,14 @@
 				minimumVersion = 0.0.3;
 			};
 		};
+		AABA5F8D2B6384DF0027EB96 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.10.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -380,6 +392,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AAAD39292B6244C7004A0774 /* XCRemoteSwiftPackageReference "twitter-text" */;
 			productName = TwitterText;
+		};
+		AABA5F8E2B6384DF0027EB96 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AABA5F8D2B6384DF0027EB96 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
