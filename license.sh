@@ -1,20 +1,11 @@
 #!/bin/bash
 
-# USAGE: ./license.sh [Root.plist path] [SourcePackages directory path]
-
-rootPlist="$1"
-sourcePackagesPath="$2"
+licensesPlist="Playground/Settings.bundle/Licenses.plist"
+sourcePackagesPath="$HOME/Library/Developer/Xcode/DerivedData/Playground-goyzuhpfiefigjcuoorztvrvqlaf/SourcePackages"
 workspaceStatePath="$sourcePackagesPath/workspace-state.json"
 checkoutsPath="$sourcePackagesPath/checkouts"
+licensesDir="$(dirname "$licensesPlist")/Licenses"
 plistBuddy="/usr/libexec/PlistBuddy"
-
-# Check for correct usage
-if [ "$#" -ne 2 ]; then
-    echo "Error: Incorrect number of arguments."
-    echo "USAGE: $0 [Root.plist path] [SourcePackages directory path]"
-    echo "Example: $0 ./Settings.bundle/Root.plist ~/Library/Developer/Xcode/DerivedData/Project-abc123/SourcePackages"
-    exit 1
-fi
 
 # Ensure jq is installed
 if ! command -v jq &> /dev/null; then
@@ -22,8 +13,20 @@ if ! command -v jq &> /dev/null; then
     exit 1
 fi
 
-# Create a new Root.plist file with the base structure
-/bin/cat <<EOF >"$rootPlist"
+# Remove existing Licenses.plist and Licenses directory
+if [ -f "$licensesPlist" ]; then
+    rm "$licensesPlist"
+fi
+
+if [ -d "$licensesDir" ]; then
+    rm -r "$licensesDir"
+fi
+
+# Create the Licenses directory
+mkdir -p "$licensesDir"
+
+# Create the main Licenses.plist file
+/bin/cat <<EOF >"$licensesPlist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -31,10 +34,10 @@ fi
   <key>PreferenceSpecifiers</key>
   <array>
     <dict>
-      <key>Type</key>
-      <string>PSGroupSpecifier</string>
       <key>Title</key>
       <string>Licenses</string>
+      <key>Type</key>
+      <string>PSGroupSpecifier</string>
     </dict>
     <!-- License Entries Will Be Added Here -->
   </array>
@@ -42,25 +45,44 @@ fi
 </plist>
 EOF
 
-# Add license entries to the Root.plist
-index=1 # Start from 1 because 0 is the header
-for dependency in $(jq -r '.object.dependencies[] | .packageRef.name + " " + .packageRef.location' "$workspaceStatePath"); do
-    name=$(echo "$dependency" | cut -d' ' -f1)
-    location=$(echo "$dependency" | cut -d' ' -f2)
-    repositoryName=$(basename "$location" .git)
+# Add license entries to the Root.plist and create individual license files
+index=1
+for dependency in $(jq -r '.object.dependencies[] | .packageRef.name' "$workspaceStatePath" | sort | uniq); do
+    name="$dependency"
+    repositoryLocation=$(jq -r --arg name "$name" '.object.dependencies[] | select(.packageRef.name == $name) | .packageRef.location' "$workspaceStatePath")
+    repositoryName=$(basename "$repositoryLocation" .git)
 
     # Find the license file
     licenseFile=$(find "$checkoutsPath/$repositoryName" -iname 'LICENSE' -o -iname 'LICENCE' | head -n 1)
 
     if [ -n "$licenseFile" ]; then
-        # Read license file content
-        licenseContent=$(<"$licenseFile")
+        # Create individual license plist file
+        /bin/cat <<EOF >"$licensesDir/$name.plist"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>PreferenceSpecifiers</key>
+  <array>
+    <dict>
+      <key>FooterText</key>
+      <string>$(cat "$licenseFile")</string>
+      <key>Title</key>
+      <string>$name</string>
+      <key>Type</key>
+      <string>PSGroupSpecifier</string>
+    </dict>
+  </array>
+</dict>
+</plist>
+EOF
 
-        # Add a new entry to the 'PreferenceSpecifiers' array
-        $plistBuddy -c "Add :PreferenceSpecifiers:$index dict" "$rootPlist"
-        $plistBuddy -c "Add :PreferenceSpecifiers:$index:Title string '$name'" "$rootPlist"
-        $plistBuddy -c "Add :PreferenceSpecifiers:$index:Type string 'PSGroupSpecifier'" "$rootPlist"
-        $plistBuddy -c "Add :PreferenceSpecifiers:$index:FooterText string '$licenseContent'" "$rootPlist"
+        # Add a new entry to the 'PreferenceSpecifiers' array in the main plist
+        $plistBuddy -c "Add :PreferenceSpecifiers:$index dict" "$licensesPlist"
+        $plistBuddy -c "Add :PreferenceSpecifiers:$index:File string 'Licenses/$name'" "$licensesPlist"
+        $plistBuddy -c "Add :PreferenceSpecifiers:$index:Title string '$name'" "$licensesPlist"
+        $plistBuddy -c "Add :PreferenceSpecifiers:$index:Type string 'PSChildPaneSpecifier'" "$licensesPlist"
+
         ((index++))
     else
         echo "Warning: No license found for $name."

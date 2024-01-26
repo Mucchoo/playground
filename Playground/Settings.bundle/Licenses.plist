@@ -6,15 +6,23 @@
 	<array>
 		<dict>
 			<key>Title</key>
-			<string>Licenses10</string>
+			<string>Licenses</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Licenses/License1</string>
+			<string>Licenses/UnicodeURL</string>
 			<key>Title</key>
-			<string>License1</string>
+			<string>UnicodeURL</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Licenses/twitter-text</string>
+			<key>Title</key>
+			<string>twitter-text</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
