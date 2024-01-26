@@ -5,12 +5,18 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>Title</key>
+			<string>Licenses10</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Licenses/License1</string>
+			<key>Title</key>
+			<string>License1</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
-			<key>Title</key>
-			<string>Licenses</string>
-			<key>File</key>
-			<string>Licenses</string>
 		</dict>
 	</array>
 </dict>
